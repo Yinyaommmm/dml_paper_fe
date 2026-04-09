@@ -146,3 +146,17 @@ export function useOcrResult(_fileId: string | null) {
 
   return { result, isLoading, error, load };
 }
+
+/** 全屏工具页：禁止 html/body 再滚动（与内部面板滚动条分离）。离开页面时恢复。 */
+export function useLockDocumentScroll() {
+  useEffect(() => {
+    const prevBody = document.body.style.overflow;
+    const prevHtml = document.documentElement.style.overflow;
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prevBody;
+      document.documentElement.style.overflow = prevHtml;
+    };
+  }, []);
+}

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { Loader2, AlertTriangle, CheckCircle2, XCircle, Clock, HelpCircle, FileSearch, ZoomIn, ZoomOut, RotateCcw, ShieldCheck } from 'lucide-react';
 import * as pdfjsLib from 'pdfjs-dist';
 import { cn } from '../lib/utils';
+import { getToken } from '../auth';
 import {
   getPdfUrl,
   getReferences,
@@ -86,7 +87,12 @@ function PdfCanvasViewer({ url, scale }: PdfCanvasViewerProps) {
     pdfDocRef.current?.destroy();
     pdfDocRef.current = null;
 
-    pdfjsLib.getDocument(url).promise.then((pdf) => {
+    const token = getToken();
+    const loadParams = {
+      url,
+      ...(token ? { httpHeaders: { Authorization: `Bearer ${token}` } } : {}),
+    } satisfies Parameters<typeof pdfjsLib.getDocument>[0];
+    pdfjsLib.getDocument(loadParams).promise.then((pdf) => {
       if (cancelled) { pdf.destroy(); return; }
       pdfDocRef.current = pdf;
       setNumPages(pdf.numPages);

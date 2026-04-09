@@ -98,10 +98,7 @@ export interface ReferenceResult {
 }
 
 export function getPdfUrl(fileId: string): string {
-  const token = getToken();
-  return token
-    ? `/api/files/${fileId}/pdf?token=${encodeURIComponent(token)}`
-    : `/api/files/${fileId}/pdf`;
+  return `/api/files/${fileId}/pdf`;
 }
 
 export async function getReferences(fileId: string): Promise<{
@@ -139,6 +136,27 @@ export async function humanVerifyReference(
     `${API_BASE}/files/${fileId}/references/${refNum}/human-verify`,
     { method: 'POST', headers: authHeaders() },
   );
+  return res.json();
+}
+
+// ─── Paper → Markdown ─────────────────────────────────────────────────────────
+
+export interface MarkdownPayload {
+  task_id: string;
+  ready: boolean;
+  markdown: string | null;
+  assets_base_path: string;
+  md_filename: string;
+  meta?: unknown;
+  message?: string;
+}
+
+export async function getMarkdown(fileId: string): Promise<MarkdownPayload> {
+  const res = await fetch(`${API_BASE}/files/${fileId}/markdown`, { headers: authHeaders() });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(err || `Markdown ${res.status}`);
+  }
   return res.json();
 }
 

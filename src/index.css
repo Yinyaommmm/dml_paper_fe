@@ -21,6 +21,13 @@
     height: 100%;
   }
 
+  /* 让根节点参与 flex 高度约束，避免子页面 h-screen + 内部滚动仍撑高整份文档 */
+  #root {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background: #fff;
@@ -190,5 +197,13 @@
   .prose th {
     background: #f5f7fa;
     font-weight: 600;
+  }
+
+  /* OCR 伪代码段落：经硬换行后含多枚 <br>，用等宽字近似论文 algorithm 环境 */
+  .md-paper p:has(br:nth-of-type(4)) {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #111827;
   }
 }

@@ -3,12 +3,20 @@ import { User, LogOut } from 'lucide-react';
 
 interface HeaderProps {
   className?: string;
+  /** 顶栏产品名（各工具页可区分） */
+  brandTitle?: string;
   onHome?: () => void;
   username?: string;
   onLogout?: () => void;
 }
 
-export function Header({ className, onHome, username, onLogout }: HeaderProps) {
+export function Header({
+  className,
+  brandTitle = 'DML Reference Checking',
+  onHome,
+  username,
+  onLogout,
+}: HeaderProps) {
   return (
     <>
       <header
@@ -28,7 +36,7 @@ export function Header({ className, onHome, username, onLogout }: HeaderProps) {
               <path d="M24 4L4 14v20l20 10 20-10V14L24 4z" fill="#4861ff" />
               <path d="M24 14L12 20v12l12 6 12-6V20L24 14z" fill="#fff" />
             </svg>
-            <span className="text-lg font-semibold">DML PaperChecking</span>
+            <span className="text-lg font-semibold">{brandTitle}</span>
           </button>
 
           {/* Nav Menu */}

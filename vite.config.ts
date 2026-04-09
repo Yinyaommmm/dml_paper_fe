@@ -8,6 +8,10 @@ export default defineConfig({
     tailwindcss(),
   ],
   server: {
+    // 监听所有网卡，便于从局域网/公网访问 5173（仍需防火墙/安全组放行）
+    host: true,
+    port: 5173,
+    strictPort: true,
     proxy: {
       '/api': {
         target: 'http://localhost:8000',
